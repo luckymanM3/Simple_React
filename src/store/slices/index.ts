@@ -1,0 +1,1 @@
+export { reducer as employeeReducer, actions as employeeActions } from "./employee.slice";
