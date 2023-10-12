@@ -4,12 +4,12 @@ import { RootState } from "store";
 
 export interface IEmployeesTableProps {
   className?: string,
-};
+  editAction?: any,
+  deleteAction?: any,
+}
 
 export const EmployeesTable: React.FC<IEmployeesTableProps> = (props) => {
   const { employees } = useSelector((root: RootState) => root.employee);
-
-  console.log(employees);
 
   const rows = [
     {
@@ -37,7 +37,9 @@ export const EmployeesTable: React.FC<IEmployeesTableProps> = (props) => {
       value: 'Actions',
     },
   ];
-
+  const test = (id: number) => {
+    console.log()
+  }
   return (
     <TableComponent
       {...props}

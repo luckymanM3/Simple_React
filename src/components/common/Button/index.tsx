@@ -18,6 +18,7 @@ export const Button = styled.button`
   outline: none;
   background-position: center;
   transition: background 0.8s;
+  margin-right: 15px;
 
   &:hover {
     background: #2196f3 radial-gradient(circle, transparent 1%, #2196f3 1%) center/15000%;

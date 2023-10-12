@@ -1,11 +1,12 @@
 .employee-table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
+    border: 1px solid #233852 ;
     width: 100%;
   }
   
   .employee-table td, .employee-table th {
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     padding: 8px;
   }
   
@@ -17,7 +18,7 @@
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #1C76E2;
+    background-color: #5483bd;
     color: white;
   }
 
@@ -25,4 +26,54 @@
     padding: 15px 0;
     display: flex;
     justify-content: space-between;
+}
+
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5483bd;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 10px 16px;
+  background-color: #5483bd;
+  color: white;
+}
+
+.action-group button {
+  margin-right: 15px;
+}
+
+.modal-body {
+  padding: 20px 50px;
+}
+
+.empty-table {
+  text-align: center;
 }

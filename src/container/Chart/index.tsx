@@ -12,7 +12,7 @@ export const ChatContainer: React.FC = () => {
         <div>
           <Button>Add Employee</Button>
         </div>
-        <EmployeesTable />
+        {/* <EmployeesTable /> */}
       </Container>
     </div>
   )
