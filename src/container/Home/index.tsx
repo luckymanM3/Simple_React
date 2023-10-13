@@ -1,11 +1,21 @@
-import { Button, EmployeesTable, AddEditModal } from "components";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Container } from "components";
-import { getEmployees, addEmployee, editEmployee, deleteEmployee, sortEmployee } from "store/slices/employee.slice";
+import { useDispatch, useSelector } from "react-redux";
 import { IEmployee } from "types";
-import { useSelector } from "react-redux";
 import { RootState } from "store";
+import { 
+  getEmployees, 
+  addEmployee, 
+  editEmployee, 
+  deleteEmployee, 
+  sortEmployee 
+} from "store/slices/employee.slice";
+import { 
+  ContainerComponent,
+  EmployeesTableComponent, 
+  AddEditModalComponent, 
+  ChartComponent,
+  ButtonComponent  
+} from "components";
 
 const initailData: IEmployee = {
   id: -1,
@@ -62,28 +72,35 @@ export const HomeContainer: React.FC = () => {
   return (
     <>
       <div className="full-content">
-        <Container>
+        <ContainerComponent>
           <div className="btn-group">
-            <Button onClick={
+            <ButtonComponent onClick={
               () => {
                 setIsShowAddModal((prevIsShowAddModal) => !prevIsShowAddModal);
                 }
               }
             >
               Add Employee
-            </Button>
+            </ButtonComponent>
           </div>
-          <EmployeesTable 
+          <EmployeesTableComponent 
             className={'employee-table'}
             sortAction={onSortAction}
             editAction={onEditAction}
             deleteAction={onDeleteAction}
+            editCellAction={onAddEmployee}
           />
-        </Container>
+
+
+        </ContainerComponent>
+        <ContainerComponent>
+          <hr />
+          <ChartComponent />
+        </ContainerComponent>
       </div>
       {
         isShowAddModal && 
-          <AddEditModal 
+          <AddEditModalComponent 
             modalType="add" 
             modalTitle="New Employee"
             initialData={selectedRow}
@@ -93,7 +110,7 @@ export const HomeContainer: React.FC = () => {
       }
       {
         isShowEditModal && 
-          <AddEditModal 
+          <AddEditModalComponent 
             modalType="edit" 
             modalTitle="Edit Employee" 
             initialData={selectedRow}

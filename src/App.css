@@ -8,6 +8,7 @@
   .employee-table td, .employee-table th {
     /* border: 1px solid #ddd; */
     padding: 8px;
+    font-size: 18px;
   }
   
   .employee-table tr:nth-child(even){background-color: #f2f2f2;}

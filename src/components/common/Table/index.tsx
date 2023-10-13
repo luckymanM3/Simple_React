@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
-import { Button } from "../Button";
+import { ButtonComponent } from "../Button";
 import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import { TableEditInputComponent } from "../TableEditInput";
+import { IEmployee } from "types";
 export interface ITableComponentProps {
   className?: string,
-  rows: {
+  cols: {
     key: string,
     value: string,
   }[],
-  cols: any,
-  editAction?: any,
-  sortAction?: any,
-  deleteAction?: any,
+  rows: any,
+  editAction: (id: number) => void,
+  sortAction: (sortedField: string, isSortUp: boolean) => void,
+  deleteAction: (id: number) => void,
+  editCellAction: (editedRow: IEmployee) => void,
 }
 
 export const TableComponent: React.FC<ITableComponentProps> = (props) => {
-  const { rows, cols, className, sortAction, editAction, deleteAction } = props;
+  const { rows, cols, className, sortAction, editAction, deleteAction, editCellAction } = props;
   const [sortedField, setSortedField] = useState<string>('');
-  const [isSortUp, setIsSortUp] = useState<boolean>();
+  const [isSortUp, setIsSortUp] = useState<boolean>(false);
 
   const onSort = (field: string) => {
     if(field === 'actions') return;
@@ -32,19 +35,26 @@ export const TableComponent: React.FC<ITableComponentProps> = (props) => {
     sortAction(sortedField, isSortUp);
   }, [isSortUp, sortedField]);
 
+  const onEditCell = (row: number, col: string, e: any) => {
+    const val = e.target.value;
+    let editedRow = {...rows[row]};
+    editedRow[col] = val;
+    editCellAction(editedRow);
+  }
+
   return (
     <table className={className}>
       <thead >
         <tr>
           <th key={'noId'} scope="col" className="">No</th>
           {
-            rows.map(row => (
-                <th key={row.key} scope="col" onClick={() => onSort(row.key)} >
-                  {row.key}
+            cols.map(col => (
+                <th key={col.key} scope="col" onClick={() => onSort(col.key)} >
+                  {col.key}
                   {
-                    row.key !== 'actions' &&
+                    col.key !== 'actions' &&
                       (
-                        sortedField === row.key ? (
+                        sortedField === col.key ? (
                           isSortUp ? <FaSortUp /> : <FaSortDown />
                         ) : <FaSort className="fa-sort-icon" />
                       )
@@ -57,22 +67,31 @@ export const TableComponent: React.FC<ITableComponentProps> = (props) => {
       </thead>
       <tbody>
         {
-          cols && (
-            cols.map((col: any, index: number) =>
+          rows && (
+            rows.map((row: any, arrayIndex: number) =>
               <tr
-                key={index}
+                key={arrayIndex}
               >
-                <td key={index+'no'} >{index+1}</td>
+                <td key={arrayIndex+'no'} >{arrayIndex+1}</td>
                 {
-                  rows.map((row, index) => {
-                    if(row.key === 'actions') {
+                  cols.map((col, index) => {
+                    if(col.key === 'actions') {
                       return (<td key={index+'s'} >
-                                <Button onClick={() => editAction(col['id'])}>EDIT</Button> 
-                                <Button onClick={() => deleteAction(col['id'])}>DELETE</Button>
+                                <ButtonComponent onClick={() => editAction(row['id'])} background="#147d69" >EDIT</ButtonComponent> 
+                                <ButtonComponent onClick={() => deleteAction(row['id'])} background="#db5d5d" >DELETE</ButtonComponent>
                               </td>
                             )
                     } else {
-                      return <td key={index} >{col[row.key]}</td>
+                      return <td key={index} id={'cell'+arrayIndex+col.key} >
+                          {
+                            <TableEditInputComponent 
+                              type={(col.key === 'age' || col.key === 'salary') ? 'number' : 'text' }
+                              id={'input'+arrayIndex+col.key}
+                              value={row[col.key]}
+                              onChange={(e) => onEditCell(arrayIndex, col.key, e)}
+                            />
+                          }
+                        </td>
                     }
                   })
                 }      
@@ -81,7 +100,7 @@ export const TableComponent: React.FC<ITableComponentProps> = (props) => {
           )
         }
         {
-          !cols.length && (
+          !rows.length && (
             <tr>
               <td colSpan={7} className="empty-table">No result</td>
             </tr>

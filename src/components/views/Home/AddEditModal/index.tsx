@@ -1,4 +1,9 @@
-import { ModalComponent, Button, Input, Label, Select } from "components"
+import {
+    ButtonComponent,
+    InputComponent,
+    LabelComponent,
+    SelectComponent 
+} from "components"
 import { IEmployee } from "types";
 import styled from "styled-components";
 import { useState } from "react";
@@ -33,16 +38,15 @@ const ModalContent = styled.div`
 export interface IModalProps {
   modalType: string,
   modalTitle: string,
-  closeAction: any,
-  addAction?: any,
-  editAction?: any,
+  closeAction: () => void,
+  addAction: (emp: IEmployee) => void,
   initialData: IEmployee,
   children?: any
 };
 
-export const AddEditModal: React.FC<IModalProps> = (props) => {
+export const AddEditModalComponent: React.FC<IModalProps> = (props) => {
   
-    const { initialData, modalTitle, modalType, closeAction, addAction, editAction } = props;
+    const { initialData, modalTitle, modalType, closeAction, addAction } = props;
     const [employee, setEmployee] = useState<IEmployee>(initialData);
 
     const onChangeEmployee = (event: any) => {
@@ -64,15 +68,15 @@ export const AddEditModal: React.FC<IModalProps> = (props) => {
     if(modalType === 'add') {
         actions = (
             <>
-                <Button type="submit" className="add-btn">Add</Button>
-                <Button className="cancel-btn" onClick={closeAction}>Cancel</Button>
+                <ButtonComponent type="submit" className="add-btn" background="#147d69">Add</ButtonComponent>
+                <ButtonComponent className="cancel-btn" onClick={closeAction} background="#db5d5d">Cancel</ButtonComponent>
             </>
         )
     } else {
         actions = (
             <>
-                <Button type="submit" className="add-btn">Edit</Button>
-                <Button className="cancel-btn" onClick={closeAction}>Cancel</Button>
+                <ButtonComponent type="submit" className="add-btn" background="#147d69">Edit</ButtonComponent>
+                <ButtonComponent className="cancel-btn" onClick={closeAction} background="#db5d5d">Cancel</ButtonComponent>
             </>
         )
     }
@@ -95,27 +99,27 @@ export const AddEditModal: React.FC<IModalProps> = (props) => {
                     </div>
                     <div className="modal-body">
                         <div className="input-group name">
-                            <Label htmlFor="name">Name</Label>
-                            <Input type="text" id="name" name="name" value={employee.name} onChange={onChangeEmployee} />
+                            <LabelComponent htmlFor="name">Name</LabelComponent>
+                            <InputComponent type="text" id="name" name="name" value={employee.name} onChange={onChangeEmployee} />
                         </div>
                         <div className="input-group address">
-                            <Label htmlFor="address">Address</Label>
-                            <Input type="text" id="address" name="address" value={employee.address} onChange={onChangeEmployee} />
+                            <LabelComponent htmlFor="address">Address</LabelComponent>
+                            <InputComponent type="text" id="address" name="address" value={employee.address} onChange={onChangeEmployee} />
                         </div>
                         <div className="input-group gender">
-                            <Label htmlFor="name">Gender</Label>
-                            <Select id="gender" name="gender" value={employee.gender} onChange={onChangeEmployee}>
+                            <LabelComponent htmlFor="name">Gender</LabelComponent>
+                            <SelectComponent id="gender" name="gender" value={employee.gender} onChange={onChangeEmployee}>
                                 <option value={"male"}>male</option>
                                 <option value={"female"}>female</option>
-                            </Select>
+                            </SelectComponent>
                         </div>
                         <div className="input-group age">
-                            <Label htmlFor="age">Age</Label>
-                            <Input type="number" id="age" name="age" value={employee.age === -1 ? '' : employee.age} onChange={onChangeEmployee} />
+                            <LabelComponent htmlFor="age">Age</LabelComponent>
+                            <InputComponent type="number" id="age" name="age" value={employee.age === -1 ? '' : employee.age} onChange={onChangeEmployee} />
                         </div>
                         <div className="input-group salary">
-                            <Label htmlFor="salary">Salary</Label>
-                            <Input type="number" id="salary" name="salary" value={employee.salary === -1 ? '' : employee.salary} onChange={onChangeEmployee}  />
+                            <LabelComponent htmlFor="salary">Salary</LabelComponent>
+                            <InputComponent type="number" id="salary" name="salary" value={employee.salary === -1 ? '' : employee.salary} onChange={onChangeEmployee}  />
                         </div>
                     </div>
                     <div className="modal-footer">

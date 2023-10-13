@@ -67,7 +67,6 @@ const employeeSlice = createSlice({
       state.addingEmployee = false;
       state.addedEmployee = true;
       state.employees = [...state.employees, action.payload];
-      console.log(state.employees);
     },
     addEmployeeError(state, action) {
       state.addingEmployee = false;
@@ -117,9 +116,6 @@ const employeeSlice = createSlice({
       state.sortedEmployee = true;
       const field = action.payload.sortedField;
       const isSortUp = action.payload.isSortUp;
-
-
-      console.log(action);
       
       if(field === 'age' || field === 'salary') {
         if(isSortUp) {
