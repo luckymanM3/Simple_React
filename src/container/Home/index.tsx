@@ -1,8 +1,8 @@
-import { Button, EmployeesTable, Input, AddEditModal } from "components";
-import { useEffect, useState } from "react";
+import { Button, EmployeesTable, AddEditModal } from "components";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Container } from "components";
-import { addEmployee, getEmployees, editEmployee, deleteEmployee } from "store/slices/employee.slice";
+import { getEmployees, addEmployee, editEmployee, deleteEmployee, sortEmployee } from "store/slices/employee.slice";
 import { IEmployee } from "types";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
@@ -18,8 +18,6 @@ const initailData: IEmployee = {
 
 export const HomeContainer: React.FC = () => {
   const dispatch = useDispatch();
-  const [orderBy, setOrderBy] = useState<string>('');
-  const [ascDesc, setAscDesc] = useState<string>('');
   const [isShowAddModal, setIsShowAddModal] = useState<boolean>(false);
   const [isShowEditModal, setIsShowEditModal] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<IEmployee>(initailData);
@@ -27,14 +25,9 @@ export const HomeContainer: React.FC = () => {
 
   useEffect(() => {
     dispatch(
-      getEmployees(
-        {
-          orderBy: orderBy,
-          ascDesc: ascDesc,
-        }
-      )
+      getEmployees()
     );
-  }, [orderBy, ascDesc])
+  }, [dispatch])
 
   const onAddEmployee = (employee: IEmployee) => {
     if(employee.id === -1) {
@@ -45,6 +38,10 @@ export const HomeContainer: React.FC = () => {
     }
 
     onCloseModal();
+  }
+
+  const onSortAction = (sortedField: string, isSortUp: boolean) => {
+    if(sortedField) dispatch(sortEmployee({sortedField, isSortUp}));
   }
 
   const onEditAction = (id: number) => {
@@ -78,6 +75,7 @@ export const HomeContainer: React.FC = () => {
           </div>
           <EmployeesTable 
             className={'employee-table'}
+            sortAction={onSortAction}
             editAction={onEditAction}
             deleteAction={onDeleteAction}
           />

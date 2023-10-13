@@ -1,8 +1,14 @@
 export interface IEmployee {
-  id?: number,
-  name?: string,
-  address?: string,
-  gender?: string,
-  age?: number,
-  salary?: number
+  id?: number | undefined,
+  name?: string | undefined,
+  address?: string | undefined,
+  gender?: string | undefined,
+  age?: number | undefined,
+  salary?: number | undefined,
+  [key: string]: any;
+}
+
+export interface SortEmployeePayload {
+  sortedField: string,
+  isSortUp: boolean
 }

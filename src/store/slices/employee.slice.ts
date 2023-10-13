@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IEmployee } from 'types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IEmployee, SortEmployeePayload } from 'types';
 
 type StateType = {
   employees: IEmployee[];
@@ -15,6 +15,9 @@ type StateType = {
   deletingEmployee: boolean,
   deletedEmployee: boolean,
 
+  sortingEmployee: boolean,
+  sortedEmployee: boolean,
+
   errors: string[];
 };
 
@@ -28,6 +31,8 @@ const initialState: StateType = {
   editedEmployee: false,
   deletingEmployee: false,
   deletedEmployee: false,
+  sortingEmployee: false,
+  sortedEmployee: false,
   errors: [],
 };
 
@@ -38,7 +43,7 @@ const employeeSlice = createSlice({
     /**
      * get employees
      */
-    getEmployees(state: StateType, action) {
+    getEmployees(state: StateType) {
       state.gettingEmployees = true;
       state.gotEmployees = false;
     },
@@ -46,6 +51,7 @@ const employeeSlice = createSlice({
       state.gettingEmployees = false;
       state.gotEmployees = true;
       state.employees = action.payload;
+      console.log(state.employees);
     },
     getEmployeesError(state, action) {
       state.gettingEmployees = false;
@@ -61,6 +67,7 @@ const employeeSlice = createSlice({
       state.addingEmployee = false;
       state.addedEmployee = true;
       state.employees = [...state.employees, action.payload];
+      console.log(state.employees);
     },
     addEmployeeError(state, action) {
       state.addingEmployee = false;
@@ -91,12 +98,46 @@ const employeeSlice = createSlice({
     deleteEmployeeSuccess(state, action) {
       state.deletingEmployee = false;
       state.deletedEmployee = true;
+      
       const index = state.employees.findIndex(emp => emp.id === action.payload)
       state.employees.splice(index, 1);
     },
     deleteEmployeeError(state, action) {
       state.deletingEmployee = false;
       state.deletedEmployee = false;
+      state.errors = [...state.errors, ...action.payload];
+    },
+
+    sortEmployee(state: StateType, action) {
+      state.sortingEmployee = false;
+      state.sortedEmployee = false;
+    },
+    sortEmployeeSuccess(state, action: PayloadAction<SortEmployeePayload>) {
+      state.sortingEmployee = false;
+      state.sortedEmployee = true;
+      const field = action.payload.sortedField;
+      const isSortUp = action.payload.isSortUp;
+
+
+      console.log(action);
+      
+      if(field === 'age' || field === 'salary') {
+        if(isSortUp) {
+          state.employees.sort((a, b) => a[field as keyof IEmployee] - b[field as keyof IEmployee]);
+        } else {
+          state.employees.sort((a, b) => b[field as keyof IEmployee] - a[field as keyof IEmployee]);
+        }
+      } else {
+        if(isSortUp) {
+          state.employees.sort((a, b) => a[field as keyof IEmployee].localeCompare(b[field as keyof IEmployee]));
+        } else {
+          state.employees.sort((a, b) => b[field as keyof IEmployee].localeCompare(a[field as keyof IEmployee]));
+        }
+      }
+    },
+    sortEmployeeError(state, action) {
+      state.sortingEmployee = false;
+      state.sortedEmployee = false;
       state.errors = [...state.errors, ...action.payload];
     },
 
@@ -122,6 +163,10 @@ export const {
   deleteEmployee,
   deleteEmployeeSuccess,
   deleteEmployeeError,
+
+  sortEmployee,
+  sortEmployeeSuccess,
+  sortEmployeeError,
 } = employeeSlice.actions;
 
 export const reducer = employeeSlice.reducer;

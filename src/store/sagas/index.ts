@@ -2,7 +2,7 @@
 //slices
 import { AppActions } from "store";
 //sagas
-import { addEmployeeSaga, getEmployeesSaga, editEmployeeSaga, deleteEmployeeSaga } from "./employee.saga";
+import { addEmployeeSaga, getEmployeesSaga, editEmployeeSaga, deleteEmployeeSaga, sortEmployeeSaga } from "./employee.saga";
 
 import { all, takeLatest } from "redux-saga/effects";
 
@@ -14,6 +14,7 @@ function* rootSaga() {
     takeLatest(AppActions.employee.addEmployee.type, addEmployeeSaga),
     takeLatest(AppActions.employee.editEmployee.type, editEmployeeSaga),
     takeLatest(AppActions.employee.deleteEmployee.type, deleteEmployeeSaga),
+    takeLatest(AppActions.employee.sortEmployee.type, sortEmployeeSaga),
   ]);
 }
 

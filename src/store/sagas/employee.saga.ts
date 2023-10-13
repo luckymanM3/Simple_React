@@ -3,6 +3,7 @@ import { AppActions } from 'store';
 import { put } from 'redux-saga/effects';
 
 import { IEmployee } from 'types';
+// import { useSelector } from 'react-redux';
 
 export function* getEmployeesSaga(action: any) {
   try {
@@ -17,35 +18,35 @@ export function* getEmployeesSaga(action: any) {
       },
       {
         id: 2,
-        name: 'alex',
-        address: 'Finland',
+        name: 'david',
+        address: 'denmark',
         gender: 'male',
-        age: 10,
-        salary: 1000
+        age: 20,
+        salary: 2000
       },
       {
         id: 3,
-        name: 'alex',
-        address: 'Finland',
+        name: 'jose',
+        address: 'sweden',
         gender: 'male',
-        age: 10,
-        salary: 1000
+        age: 24,
+        salary: 3000
       },
       {
         id: 4,
-        name: 'alex',
-        address: 'Finland',
+        name: 'html',
+        address: 'rb',
         gender: 'male',
-        age: 10,
-        salary: 1000
+        age: 23,
+        salary: 400
       },
       {
         id: 5,
-        name: 'alex',
-        address: 'Finland',
-        gender: 'male',
-        age: 10,
-        salary: 1000
+        name: 'javascript',
+        address: 'world',
+        gender: 'female',
+        age: 6,
+        salary: 700
       }
     ]
 
@@ -83,12 +84,23 @@ export function* editEmployeeSaga(action: any) {
 
 export function* deleteEmployeeSaga(action: any) {
   try {
-    const result: IEmployee = action.payload;
+    const result: number = action.payload;
 
     if (result) {
       yield put(AppActions.employee.deleteEmployeeSuccess(result));
     }
   } catch (error: any) {
     yield put(AppActions.employee.deleteEmployeeError(error.response.data.message));
+  }
+}
+
+export function* sortEmployeeSaga(action: any) {
+  try {
+    const result: any = action.payload;
+    if (result) {
+      yield put(AppActions.employee.sortEmployeeSuccess(result));
+    }
+  } catch (error: any) {
+    yield put(AppActions.employee.sortEmployeeError(error.response.data.message));
   }
 }

@@ -4,6 +4,7 @@ import { RootState } from "store";
 
 export interface IEmployeesTableProps {
   className?: string,
+  sortAction?: any,
   editAction?: any,
   deleteAction?: any,
 }
@@ -37,9 +38,7 @@ export const EmployeesTable: React.FC<IEmployeesTableProps> = (props) => {
       value: 'Actions',
     },
   ];
-  const test = (id: number) => {
-    console.log()
-  }
+
   return (
     <TableComponent
       {...props}

@@ -20,6 +20,7 @@
     text-align: left;
     background-color: #5483bd;
     color: white;
+    cursor: pointer;
   }
 
 .btn-group {
@@ -76,4 +77,8 @@
 
 .empty-table {
   text-align: center;
+}
+
+.fa-sort-icon {
+  color: rgba(196, 196, 196, 0.397);
 }
