@@ -1,18 +1,20 @@
 import { TableComponent } from "components";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
+import { IEmployee } from "types";
 
 export interface IEmployeesTableProps {
   className?: string,
-  sortAction?: any,
-  editAction?: any,
-  deleteAction?: any,
+  editAction: (id: number) => void,
+  sortAction: (sortedField: string, isSortUp: boolean) => void,
+  deleteAction: (id: number) => void,
+  editCellAction: (editedRow: IEmployee) => void,
 }
 
-export const EmployeesTable: React.FC<IEmployeesTableProps> = (props) => {
+export const EmployeesTableComponent: React.FC<IEmployeesTableProps> = (props) => {
   const { employees } = useSelector((root: RootState) => root.employee);
 
-  const rows = [
+  const cols = [
     {
       key: 'name',
       value: 'Name'
@@ -42,8 +44,8 @@ export const EmployeesTable: React.FC<IEmployeesTableProps> = (props) => {
   return (
     <TableComponent
       {...props}
-      rows={rows}
-      cols={employees}
+      rows={employees}
+      cols={cols}
     />
   )
 }
